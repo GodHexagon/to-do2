@@ -16,6 +16,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Slider from '@mui/material/Slider';
 
 import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -26,6 +27,7 @@ type Anchor = 'top' | 'left' | 'bottom' | 'right';
 export const App = () => {
   const [add, setAdd] = useState(0);
   
+  // Settingsを開くイベント
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -49,7 +51,9 @@ export const App = () => {
 
       setState({ ...state, [anchor]: open });
     };
-  const settingsMenu = (anchor: Anchor) => (
+
+  // settingsの中身
+  const settings = (anchor: Anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
@@ -84,6 +88,13 @@ export const App = () => {
     </Box>
   );
 
+  // スクロールバーの中身
+  const sideScrollBar = () => (
+    <Slider></Slider>
+  )
+
+
+
   return (
     <Stack sx={{ width: '100vw', height: '100vh' }}>
       <AppBar position="static" color="secondary" sx={{ justifyContent: 'space-between' }}>
@@ -111,12 +122,30 @@ export const App = () => {
             onClose={toggleDrawer('right', false)}
             onOpen={toggleDrawer('right', true)}
           >
-            {settingsMenu('right')}
+            {settings('right')}
           </SwipeableDrawer>
         </Toolbar>
       </AppBar>
 
       <Box sx={{ flex: 1 }}>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
         <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
         <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
         <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
