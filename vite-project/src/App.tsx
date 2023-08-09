@@ -37,7 +37,7 @@ export const App = () => {
     right: false,
   });
   const toggleDrawer =
-    (anchor: Anchor, open: boolean) =>
+    (anchor: Anchor, mode: number) => //mode = -1:false, 0:Not, 1:true
     (event: React.KeyboardEvent | React.MouseEvent) => 
   {
     if (
@@ -49,7 +49,13 @@ export const App = () => {
       )
     ){ return; }
 
-    setState({ ...state, [anchor]: open });
+    if(mode === -1) {
+      setState({ ...state, [anchor]: false });
+    } else if(mode === 1) {
+      setState({ ...state, [anchor]: true });
+    } else {
+      setState({ ...state, [anchor]: !state[anchor] });
+    }
   };
 
   // settingsの中身
@@ -57,9 +63,13 @@ export const App = () => {
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      onClick={toggleDrawer(anchor, -1)}
+      onKeyDown={toggleDrawer(anchor, -1)}
     >
+      <List>
+        <ListItem sx={{ height: '50px' }}></ListItem>
+      </List>
+      <Divider />
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem key={text} disablePadding>
@@ -88,6 +98,16 @@ export const App = () => {
     </Box>
   );
 
+  // エリア追加
+  const [componentCount, setComponentCount] = useState(1);
+  const addComponent = () => {
+    setComponentCount(componentCount + 1);
+  };
+
+  const card = () => (
+    <Box></Box>
+  )
+
   // スクロールバーの中身
   const sideScrollBar = () => (
     <Slider></Slider>
@@ -100,7 +120,7 @@ export const App = () => {
       <AppBar position="static" color="secondary" sx={{ justifyContent: 'center' }}>
         <Toolbar>
           <Button variant="text" href="../index.html" sx={{ marginRight: '20px' }}>
-              <Typography sx={{ fontSize: '2rem', color: '#e9e900' }}>T-ToDo</Typography>
+            <Typography sx={{ fontSize: '2rem', color: '#e9e900' }}>T-ToDo</Typography>
           </Button>
           <ButtonGroup variant="contained" aria-label="outlined button group">
             <Button>
@@ -113,26 +133,30 @@ export const App = () => {
 
           <Box sx={{ flex: '1' }}></Box>
 
-          <Button variant="text" onClick={toggleDrawer('right', true)}>
-            <SettingsIcon></SettingsIcon>
+          <Button variant="text" onClick={toggleDrawer('right', 0)} sx={{ zIndex: '1300' }}>
+            <SettingsIcon />
           </Button>
           <SwipeableDrawer
             anchor={'right'}
             open={state['right']}
-            onClose={toggleDrawer('right', false)}
-            onOpen={toggleDrawer('right', true)}
+            onClose={toggleDrawer('right', -1)}
+            onOpen={toggleDrawer('right', 1)}
           >
             {settings('right')}
           </SwipeableDrawer>
         </Toolbar>
       </AppBar>
 
-      <Box overflow="scroll" sx={{ flex: 1 }}>
-        <Grid container direction="column">
-          <Grid>
-            <Button variant='contained'></Button>
+      <Box overflow="hidden" sx={{ flex: 1 }}>
+        <Box height="100%" position="relative">
+          <Grid container direction="column">
+            <button onClick={addComponent}>コンポーネント追加</button>
+            {Array.from(
+              { length: componentCount }, 
+              () => (<Button variant='contained'>aaaaaaa</Button>)
+            )}
           </Grid>
-        </Grid>
+        </Box>
       </Box>
 
       <Stack paddingX="30px" direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ height: '70px' }}>
