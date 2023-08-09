@@ -6,9 +6,6 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
@@ -17,10 +14,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Slider from '@mui/material/Slider';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Typography from '@mui/material/Typography';
+import Fab from '@mui/material/Fab';
 
 import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
+import AddIcon from '@mui/icons-material/Add';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -97,12 +99,12 @@ export const App = () => {
 
   return (
     <Stack sx={{ width: '100vw', height: '100vh' }}>
-      <AppBar position="static" color="secondary" sx={{ justifyContent: 'space-between' }}>
+      <AppBar position="static" color="secondary" sx={{ justifyContent: 'center' }}>
         <Toolbar>
           <Button variant="text" href="../index.html" sx={{ marginRight: '20px' }}>
               <Typography sx={{ fontSize: '2rem', color: '#e9e900' }}>T-ToDo</Typography>
           </Button>
-          <ButtonGroup disabled variant="contained" aria-label="outlined button group">
+          <ButtonGroup variant="contained" aria-label="outlined button group">
             <Button>
               <UndoIcon></UndoIcon>
             </Button>
@@ -151,11 +153,14 @@ export const App = () => {
         <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
       </Box>
 
-      <Grid sx={{ height: '50px' }}>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-      </Grid>
+      <Stack paddingX="30px" direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ height: '70px' }}>
+        <Box display="flex" alignItems="center" sx={{ flex: '1' }}>
+          {sideScrollBar()}
+        </Box>
+        <Fab color="primary" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </Stack>
     </Stack>
   );
 } 
