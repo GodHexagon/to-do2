@@ -30,7 +30,7 @@ export const App = () => {
   const [add, setAdd] = useState(0);
   
   // Settingsを開くイベント
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     top: false,
     left: false,
     bottom: false,
@@ -38,21 +38,19 @@ export const App = () => {
   });
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event &&
-        event.type === 'keydown' &&
-        (
-          (event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift'
-        )
+    (event: React.KeyboardEvent | React.MouseEvent) => 
+  {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      (
+        (event as React.KeyboardEvent).key === 'Tab' ||
+        (event as React.KeyboardEvent).key === 'Shift'
       )
-      {
-        return;
-      }
+    ){ return; }
 
-      setState({ ...state, [anchor]: open });
-    };
+    setState({ ...state, [anchor]: open });
+  };
 
   // settingsの中身
   const settings = (anchor: Anchor) => (
@@ -129,28 +127,12 @@ export const App = () => {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ flex: 1 }}>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
-        <Button variant="contained" onClick={() => setAdd(() => add + 1)}>Contained*{add}</Button>
+      <Box overflow="scroll" sx={{ flex: 1 }}>
+        <Grid container direction="column">
+          <Grid>
+            <Button variant='contained'></Button>
+          </Grid>
+        </Grid>
       </Box>
 
       <Stack paddingX="30px" direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ height: '70px' }}>
