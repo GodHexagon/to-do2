@@ -159,7 +159,7 @@ export const App = () => {
         </Box>
       </Box>
 
-      <Stack paddingX="30px" direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ height: '70px' }}>
+      <Stack paddingX="50px" direction="row" spacing={6} justifyContent="center" alignItems="center" sx={{ height: '70px' }}>
         <Box display="flex" alignItems="center" sx={{ flex: '1' }}>
           {sideScrollBar()}
         </Box>
