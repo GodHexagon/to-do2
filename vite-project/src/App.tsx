@@ -18,6 +18,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
@@ -27,6 +28,7 @@ import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import AddIcon from '@mui/icons-material/Add';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 interface CardData {
@@ -144,9 +146,9 @@ export const App = () => {
 
           <Box sx={{ flex: '1' }}></Box>
 
-          <Button variant="text" onClick={toggleDrawer('right', 0)} sx={{ zIndex: '1300' }}>
+          <IconButton onClick={toggleDrawer('right', 0)} sx={{ zIndex: '1300' }}>
             <SettingsIcon />
-          </Button>
+          </IconButton>
           <SwipeableDrawer
             anchor={'right'}
             open={state['right']}
@@ -164,10 +166,17 @@ export const App = () => {
             {cardData.map((data) => {
               return (
                 <Grid width="33vw" maxHeight="100%" key={data.key}>
-                  <Box height="100px" border={1} borderRadius={1.5} margin="10px">
-                    {data.key}
-                    <TextField fullWidth label="fullWidth" id="fullWidth" variant="standard" />
-                  </Box>
+                  <Card sx={{ margin: '10px' }}>
+                    <CardContent>
+                      {data.key}
+                      <TextField fullWidth label="fullWidth" id="fullWidth" variant="standard" />
+                    </CardContent>
+                    <CardActions>
+                      <IconButton>
+                        <EditNoteIcon />
+                      </IconButton>
+                    </CardActions>
+                  </Card>
                 </Grid>
               );
             })}
