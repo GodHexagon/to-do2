@@ -13,11 +13,15 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
+import TextField from '@mui/material/TextField';
 
 import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -25,6 +29,9 @@ import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import AddIcon from '@mui/icons-material/Add';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
+interface CardData {
+  key: number;// 追加した回数だけ値が大きくなる
+}
 
 export const App = () => {
   const [add, setAdd] = useState(0);
@@ -99,13 +106,17 @@ export const App = () => {
   );
 
   // エリア追加
-  const [componentCount, setComponentCount] = useState(1);
-  const addComponent = () => {
-    setComponentCount(componentCount + 1);
+  const [cardData, setCardData] = React.useState<readonly CardData[]> ([]);
+  const [numberNewKey, setNumberNewKey] = useState(0);
+
+  const addCard = () => {
+    setCardData([ ...cardData, {key: numberNewKey} ]);
+    setNumberNewKey(numberNewKey + 1);
   };
 
+  // カードの中身
   const card = () => (
-    <Box></Box>
+    <Box width="33vw" height="100%"></Box>
   )
 
   // スクロールバーの中身
@@ -147,14 +158,19 @@ export const App = () => {
         </Toolbar>
       </AppBar>
 
-      <Box overflow="hidden" sx={{ flex: 1 }}>
-        <Box height="100%" position="relative">
-          <Grid container direction="column">
-            <button onClick={addComponent}>コンポーネント追加</button>
-            {Array.from(
-              { length: componentCount }, 
-              () => (<Button variant='contained'>aaaaaaa</Button>)
-            )}
+      <Box paddingX="0.5vw" overflow="hidden" sx={{ flex: 1 }}>
+        <Box height="100%" maxWidth="100000px" position="relative">
+          <Grid height="100%" container direction="column" justifyContent="start">
+            {cardData.map((data) => {
+              return (
+                <Grid width="33vw" maxHeight="100%" key={data.key}>
+                  <Box height="100px" border={1} borderRadius={1.5} margin="10px">
+                    {data.key}
+                    <TextField fullWidth label="fullWidth" id="fullWidth" variant="standard" />
+                  </Box>
+                </Grid>
+              );
+            })}
           </Grid>
         </Box>
       </Box>
@@ -163,7 +179,7 @@ export const App = () => {
         <Box display="flex" alignItems="center" sx={{ flex: '1' }}>
           {sideScrollBar()}
         </Box>
-        <Fab color="primary" aria-label="add">
+        <Fab color="primary" aria-label="add" onClick={addCard}>
           <AddIcon />
         </Fab>
       </Stack>
