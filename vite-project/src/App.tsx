@@ -29,6 +29,8 @@ import UndoIcon from '@mui/icons-material/Undo';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import MenuIcon from '@mui/icons-material/Menu';
+import DownTriangleIcon from '@mui/icons-material/ArrowDropDownOutlined';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 interface CardData {
@@ -171,9 +173,12 @@ export const App = () => {
                       {data.key}
                       <TextField fullWidth label="fullWidth" id="fullWidth" variant="standard" />
                     </CardContent>
-                    <CardActions>
+                    <CardActions sx={{ justifyContent: 'end' }}>
                       <IconButton>
                         <EditNoteIcon />
+                      </IconButton>
+                      <IconButton>
+                        <DownTriangleIcon />
                       </IconButton>
                     </CardActions>
                   </Card>
