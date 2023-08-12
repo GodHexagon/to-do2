@@ -110,8 +110,8 @@ export const App = () => {
   );
 
   // エリア追加
-  const [cardData, setCardData] = React.useState<readonly CardData[]> ([]);
-  const [numberNewKey, setNumberNewKey] = useState(0);
+  const [cardData, setCardData] = React.useState<readonly CardData[]> ([{key: 0}]);
+  const [numberNewKey, setNumberNewKey] = useState(1);
 
   const addCard = () => {
     setCardData([ ...cardData, {key: numberNewKey} ]);
@@ -162,12 +162,12 @@ export const App = () => {
         </Toolbar>
       </AppBar>
 
-      <Box paddingX="0.5vw" overflow="hidden" sx={{ flex: 1 }}>
-        <Box height="100%" maxWidth="100000px" position="relative">
+      <Box paddingX="0vw" overflow="hidden" sx={{ flex: 1 }}>
+        <Box width="0" height="100%" maxWidth="100000px" position="relative">
           <Grid height="100%" container direction="column" justifyContent="start">
             {cardData.map((data) => {
               return (
-                <Grid width="33vw" maxHeight="100%" key={data.key}>
+                <Grid width="25vw" maxHeight="100%" key={data.key}>
                   <Card sx={{ margin: '10px' }}>
                     <CardContent>
                       {data.key}
@@ -185,6 +185,16 @@ export const App = () => {
                 </Grid>
               );
             })}
+
+              <Grid width="25vw" maxHeight="100%">
+                <Card variant="outlined" sx={{ margin: '10px' }}>
+                  <CardContent sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Fab color="primary" aria-label="add" onClick={addCard}>
+                      <AddIcon />
+                    </Fab>
+                  </CardContent>
+                </Card>
+              </Grid>
           </Grid>
         </Box>
       </Box>
