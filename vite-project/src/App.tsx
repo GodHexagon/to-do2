@@ -23,6 +23,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Typography from '@mui/material/Typography';
 import Fab from '@mui/material/Fab';
 import TextField from '@mui/material/TextField';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -31,6 +33,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import MenuIcon from '@mui/icons-material/Menu';
 import DownTriangleIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 interface CardData {
@@ -109,10 +112,9 @@ export const App = () => {
     </Box>
   );
 
-  // エリア追加
+  // カードを追加するイベント
   const [cardData, setCardData] = React.useState<readonly CardData[]> ([{key: 0}]);
   const [numberNewKey, setNumberNewKey] = useState(1);
-
   const addCard = () => {
     setCardData([ ...cardData, {key: numberNewKey} ]);
     setNumberNewKey(numberNewKey + 1);
@@ -122,6 +124,16 @@ export const App = () => {
   const card = () => (
     <Box width="33vw" height="100%"></Box>
   )
+
+  // カードオプションプルダウンのイベント
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   // スクロールバーの中身
   const sideScrollBar = () => (
@@ -177,9 +189,30 @@ export const App = () => {
                       <IconButton>
                         <EditNoteIcon />
                       </IconButton>
-                      <IconButton>
-                        <DownTriangleIcon />
-                      </IconButton>
+                      <>
+                        <IconButton
+                          id="basic-button"
+                          aria-controls={open ? 'basic-menu' : undefined}
+                          aria-haspopup="true"
+                          aria-expanded={open ? 'true' : undefined}
+                          onClick={handleClick}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                          }}
+                        >
+                          <MenuItem onClick={handleClose}>Profile</MenuItem>
+                          <MenuItem onClick={handleClose}>My account</MenuItem>
+                          <MenuItem onClick={handleClose}>Logout</MenuItem>
+                        </Menu>
+                      </>
                     </CardActions>
                   </Card>
                 </Grid>
