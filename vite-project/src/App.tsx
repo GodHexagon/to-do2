@@ -37,7 +37,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 interface CardData {
-  key: number;// 追加した回数だけ値が大きくなる
+  key: number,// 追加した回数だけ値が大きくなる（現在無制限のため対策必要）
+  deleted: boolean
 }
 
 export const App = () => {
@@ -113,26 +114,28 @@ export const App = () => {
   );
 
   // カードを追加するイベント
-  const [cardData, setCardData] = React.useState<readonly CardData[]> ([{key: 0}]);
+  const [cardData, setCardData] = React.useState<CardData[]> ([{key: 0, deleted: false}]);
   const [numberNewKey, setNumberNewKey] = useState(1);
   const addCard = () => {
-    setCardData([ ...cardData, {key: numberNewKey} ]);
+    setCardData([ ...cardData, {key: numberNewKey, deleted: false} ]);
     setNumberNewKey(numberNewKey + 1);
   };
-
-  // カードの中身
-  const card = () => (
-    <Box width="33vw" height="100%"></Box>
-  )
+  
+  const hanDeleteCard = (cardToDelete: CardData) => () => {
+    setAnchorCardMenu(null);
+    setCardData((chips) => chips.filter((chip) => chip.key !== cardToDelete.key));
+  };
 
   // カードオプションプルダウンのイベント
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const [anchorCardMenu, setAnchorCardMenu] = React.useState<null | HTMLElement>(null);
+  const [selectedKeyCardMenu, setSelectedKeyCardMenu] = React.useState<CardData>();
+  const open = Boolean(anchorCardMenu);
+  const hanOpenCardMenu = (card: CardData) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    setSelectedKeyCardMenu(card);
+    setAnchorCardMenu(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const hanCloseCardMenu = () => {
+    setAnchorCardMenu(null);
   };
 
   // スクロールバーの中身
@@ -195,23 +198,10 @@ export const App = () => {
                           aria-controls={open ? 'basic-menu' : undefined}
                           aria-haspopup="true"
                           aria-expanded={open ? 'true' : undefined}
-                          onClick={handleClick}
+                          onClick={hanOpenCardMenu(data)}
                         >
                           <MoreVertIcon />
                         </IconButton>
-                        <Menu
-                          id="basic-menu"
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                          }}
-                        >
-                          <MenuItem onClick={handleClose}>Profile</MenuItem>
-                          <MenuItem onClick={handleClose}>My account</MenuItem>
-                          <MenuItem onClick={handleClose}>Logout</MenuItem>
-                        </Menu>
                       </>
                     </CardActions>
                   </Card>
@@ -219,15 +209,27 @@ export const App = () => {
               );
             })}
 
-              <Grid width="25vw" maxHeight="100%">
-                <Card variant="outlined" sx={{ margin: '10px' }}>
-                  <CardContent sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Fab color="primary" aria-label="add" onClick={addCard}>
-                      <AddIcon />
-                    </Fab>
-                  </CardContent>
-                </Card>
-              </Grid>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorCardMenu}
+              open={open}
+              onClose={hanCloseCardMenu}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem onClick={selectedKeyCardMenu === undefined? undefined: hanDeleteCard(selectedKeyCardMenu)}>Delete</MenuItem>
+            </Menu>
+
+            <Grid width="25vw" maxHeight="100%">
+              <Card variant="outlined" sx={{ margin: '10px' }}>
+                <CardContent sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Fab color="primary" aria-label="add" onClick={addCard}>
+                    <AddIcon />
+                  </Fab>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
         </Box>
       </Box>
