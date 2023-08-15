@@ -121,6 +121,7 @@ export const App = () => {
     setNumberNewKey(numberNewKey + 1);
   };
   
+  // カードを削除するイベント
   const hanDeleteCard = (cardToDelete: CardData) => () => {
     setAnchorCardMenu(null);
     setCardData((chips) => chips.filter((chip) => chip.key !== cardToDelete.key));
@@ -128,15 +129,17 @@ export const App = () => {
 
   // カードオプションプルダウンのイベント
   const [anchorCardMenu, setAnchorCardMenu] = React.useState<null | HTMLElement>(null);
-  const [selectedKeyCardMenu, setSelectedKeyCardMenu] = React.useState<CardData>();
+  const [selectedCardDeta, setSelectedCardData] = React.useState<CardData>();
   const open = Boolean(anchorCardMenu);
   const hanOpenCardMenu = (card: CardData) => (event: React.MouseEvent<HTMLButtonElement>) => {
-    setSelectedKeyCardMenu(card);
+    setSelectedCardData(card);
     setAnchorCardMenu(event.currentTarget);
   };
   const hanCloseCardMenu = () => {
     setAnchorCardMenu(null);
   };
+
+  const [isEditingMode, setIsEditingMode] = useState<boolean>(false);
 
   // スクロールバーの中身
   const sideScrollBar = () => (
@@ -163,7 +166,7 @@ export const App = () => {
 
           <Box sx={{ flex: '1' }}></Box>
 
-          <IconButton onClick={toggleDrawer('right', 0)} sx={{ zIndex: '1300' }}>
+          <IconButton id='open-settings' onClick={toggleDrawer('right', 0)} sx={{ zIndex: '1300' }}>
             <SettingsIcon />
           </IconButton>
           <SwipeableDrawer
@@ -182,43 +185,47 @@ export const App = () => {
           <Grid height="100%" container direction="column" justifyContent="start">
             {cardData.map((data) => {
               return (
-                <Grid width="25vw" maxHeight="100%" key={data.key}>
-                  <Card sx={{ margin: '10px' }}>
-                    <CardContent>
-                      {data.key}
-                      <TextField fullWidth label="fullWidth" id="fullWidth" variant="standard" />
-                    </CardContent>
-                    <CardActions sx={{ justifyContent: 'end' }}>
-                      <IconButton>
-                        <EditNoteIcon />
-                      </IconButton>
-                      <>
-                        <IconButton
-                          id="basic-button"
-                          aria-controls={open ? 'basic-menu' : undefined}
-                          aria-haspopup="true"
-                          aria-expanded={open ? 'true' : undefined}
-                          onClick={hanOpenCardMenu(data)}
-                        >
-                          <MoreVertIcon />
+                <Grid width="25vw" maxHeight="100%" padding="10px" key={data.key}>
+                  <Card>
+                    <Stack>
+                      <CardContent>
+                        <TextField fullWidth multiline id="card-title" variant="standard" maxRows={4} />
+                      </CardContent>
+                      <CardContent sx={{ overflow: 'scroll' }}>
+                        
+                      </CardContent>
+                      <CardActions sx={{ justifyContent: 'end' }}>
+                        <IconButton>
+                          <EditNoteIcon />
                         </IconButton>
-                      </>
-                    </CardActions>
+                        <>
+                          <IconButton
+                            id="open-card-menu"
+                            aria-controls={open ? 'basic-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                            onClick={hanOpenCardMenu(data)}
+                          >
+                            <MoreVertIcon />
+                          </IconButton>
+                        </>
+                      </CardActions>
+                    </Stack>
                   </Card>
                 </Grid>
               );
             })}
 
             <Menu
-              id="basic-menu"
+              id="card-menu"
               anchorEl={anchorCardMenu}
               open={open}
               onClose={hanCloseCardMenu}
               MenuListProps={{
-                'aria-labelledby': 'basic-button',
+                'aria-labelledby': 'card-menu',
               }}
             >
-              <MenuItem onClick={selectedKeyCardMenu === undefined? undefined: hanDeleteCard(selectedKeyCardMenu)}>Delete</MenuItem>
+              <MenuItem onClick={selectedCardDeta === undefined? undefined: hanDeleteCard(selectedCardDeta)}>Delete</MenuItem>
             </Menu>
 
             <Grid width="25vw" maxHeight="100%">
