@@ -195,9 +195,6 @@ export const App = () => {
                         
                       </CardContent>
                       <CardActions sx={{ justifyContent: 'end' }}>
-                        <IconButton>
-                          <EditNoteIcon />
-                        </IconButton>
                         <>
                           <IconButton
                             id="open-card-menu"
