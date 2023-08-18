@@ -30,20 +30,22 @@ import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import AddIcon from '@mui/icons-material/Add';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import MenuIcon from '@mui/icons-material/Menu';
-import DownTriangleIcon from '@mui/icons-material/ArrowDropDownOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 interface CardData {
   key: number,// 追加した回数だけ値が大きくなる（現在無制限のため対策必要）
+  title: string,
+  taskData: TaskData[],
   deleted: boolean
+}
+interface TaskData {
+  key: number,
+  taskName: string,
+  completed: boolean
 }
 
 export const App = () => {
-  const [add, setAdd] = useState(0);
-  
   // Settingsを開くイベント
   const [state, setState] = useState({
     top: false,
@@ -114,11 +116,15 @@ export const App = () => {
   );
 
   // カードを追加するイベント
-  const [cardData, setCardData] = React.useState<CardData[]> ([{key: 0, deleted: false}]);
-  const [numberNewKey, setNumberNewKey] = useState(1);
-  const addCard = () => {
-    setCardData([ ...cardData, {key: numberNewKey, deleted: false} ]);
+  const [numberNewKey, setNumberNewKey] = useState(0);
+  const createCardData = () => {
+    const newCardData: CardData = {key: numberNewKey, title: '', taskData: [], deleted: false};
     setNumberNewKey(numberNewKey + 1);
+    return newCardData;
+  }
+  const [cardData, setCardData] = React.useState<CardData[]> ([createCardData()]);
+  const addCard = () => {
+    setCardData([ ...cardData, createCardData() ]);
   };
   
   // カードを削除するイベント
