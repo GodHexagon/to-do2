@@ -122,7 +122,7 @@ export const App = () => {
     setNumberNewKey(numberNewKey + 1);
     return newCardData;
   }
-  const [cardData, setCardData] = React.useState<CardData[]> ([createCardData()]);
+  const [cardData, setCardData] = React.useState<CardData[]> ([]);
   const addCard = () => {
     setCardData([ ...cardData, createCardData() ]);
   };
@@ -151,8 +151,6 @@ export const App = () => {
   const sideScrollBar = () => (
     <Slider></Slider>
   )
-
-
 
   return (
     <Stack sx={{ width: '100vw', height: '100vh' }}>
