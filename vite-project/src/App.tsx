@@ -145,7 +145,14 @@ export const App = () => {
     setAnchorCardMenu(null);
   };
 
-  const [isEditingMode, setIsEditingMode] = useState<boolean>(false);
+  // タイトル入力イベントハンドル
+  const onCardTitleChange = (data: CardData, newText: string) => {
+    data.title = newText;
+    const index:number = cardData.indexOf(data);
+    cardData.splice(index, 1, data);
+    setCardData([...cardData]);
+    console.log(...cardData);
+  }
 
   // スクロールバーの中身
   const sideScrollBar = () => (
@@ -193,7 +200,19 @@ export const App = () => {
                   <Card>
                     <Stack>
                       <CardContent>
-                        <TextField fullWidth multiline id="card-title" variant="standard" maxRows={4} />
+                        <form>
+                          <TextField 
+                            fullWidth 
+                            multiline 
+                            id="card-title" 
+                            variant="standard" 
+                            maxRows={4} 
+                            value={
+                              data.title
+                            }
+                            onChange={(e) => onCardTitleChange(data, e.target.value)}
+                          />
+                        </form>
                       </CardContent>
                       <CardContent sx={{ overflow: 'scroll' }}>
                         
