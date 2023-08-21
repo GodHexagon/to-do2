@@ -46,6 +46,30 @@ interface TaskData {
   completed: boolean
 }
 
+// タスクリストの中身
+const TaskList = (data: TaskData[]) => {
+
+  const createTaskData = () => {
+    return {key: data.length, taskName: "", completed: false};
+  };
+
+  return (
+    <List dense>
+      {data.map((data) => {
+        return(
+          <ListItem key={data.key}>aaa</ListItem>
+        );
+      })}
+      <ListItemButton>
+        <ListItemIcon
+        >
+          <AddIcon />
+        </ListItemIcon>
+      </ListItemButton>
+    </List>
+  );
+}
+
 export const App = () => {
   // Settingsを開くイベント
   const [state, setState] = useState({
@@ -122,7 +146,7 @@ export const App = () => {
     const newCardData: CardData = {key: numberNewKey, title: '', taskData: [], deleted: false};
     setNumberNewKey(numberNewKey + 1);
     return newCardData;
-  }
+  };
   const [cardData, setCardData] = React.useState<CardData[]> ([]);
   const addCard = () => {
     setCardData([ ...cardData, createCardData() ]);
@@ -211,7 +235,7 @@ export const App = () => {
                         <form>
                           <TextField 
                             fullWidth 
-                            multiline 
+                            multiline
                             id="card-title" 
                             variant="standard" 
                             maxRows={4} 
@@ -225,7 +249,7 @@ export const App = () => {
                         </form>
                       </CardContent>
                       <CardContent sx={{ overflow: 'scroll' }}>
-                        
+                        {TaskList(data.taskData)}
                       </CardContent>
                       <CardActions sx={{ justifyContent: 'end' }}>
                         <Checkbox
