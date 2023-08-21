@@ -25,6 +25,7 @@ import Fab from '@mui/material/Fab';
 import TextField from '@mui/material/TextField';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
 
 import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -145,14 +146,21 @@ export const App = () => {
     setAnchorCardMenu(null);
   };
 
-  // タイトル入力イベントハンドル
+  // タイトル入力イベントハンドラー
   const onCardTitleChange = (data: CardData, newText: string) => {
     data.title = newText;
     const index:number = cardData.indexOf(data);
     cardData.splice(index, 1, data);
     setCardData([...cardData]);
-    console.log(...cardData);
   }
+
+  // カードのチェックボックスのイベントハンドラー
+  /*
+  const [bottomCheckbox, setBottomCheckbox] = useState(false);
+  const onBottomCheckboxChange = () => {
+    setBottomCheckbox(!bottomCheckbox);
+  }
+  */
 
   // スクロールバーの中身
   const sideScrollBar = () => (
@@ -210,7 +218,9 @@ export const App = () => {
                             value={
                               data.title
                             }
-                            onChange={(e) => onCardTitleChange(data, e.target.value)}
+                            onChange={
+                              (e) => onCardTitleChange(data, e.target.value)
+                            }
                           />
                         </form>
                       </CardContent>
@@ -218,6 +228,8 @@ export const App = () => {
                         
                       </CardContent>
                       <CardActions sx={{ justifyContent: 'end' }}>
+                        <Checkbox
+                        />
                         <>
                           <IconButton
                             id="open-card-menu"
