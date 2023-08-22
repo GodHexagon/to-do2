@@ -45,13 +45,14 @@ interface TaskData {
   taskName: string,
   completed: boolean
 }
-
+ 
 // タスクリストの中身
-const TaskList = (data: TaskData[]) => {
+/*
+function TaskList({ taskData }) {
 
-  const createTaskData = () => {
-    return {key: data.length, taskName: "", completed: false};
-  };
+}
+*/
+const TaskList = (data: TaskData[]) => {
 
   return (
     <List dense>
@@ -69,6 +70,9 @@ const TaskList = (data: TaskData[]) => {
     </List>
   );
 }
+const createTaskData = (data: TaskData[]) => {
+  return {key: data.length, taskName: "", completed: false};
+};
 
 export const App = () => {
   // Settingsを開くイベント
@@ -177,6 +181,7 @@ export const App = () => {
     cardData.splice(index, 1, data);
     setCardData([...cardData]);
   }
+  
 
   // カードのチェックボックスのイベントハンドラー
   /*
