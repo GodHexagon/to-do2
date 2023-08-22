@@ -56,10 +56,10 @@ const TaskList = (prop: { taskData: TaskData[], onChange: (newData: TaskData[]) 
   let data = prop.taskData;
   const onChange = prop.onChange;
   
-  let newTaskKey: number = 0;
+  const [newTaskKey, setNewTaskKey] = useState(0);
   const createTaskData = () => {
     const newTaskData: TaskData = {key: newTaskKey, taskName: "", completed: false};
-    newTaskKey += 1;
+    setNewTaskKey(newTaskKey + 1);
     return newTaskData;
   };
   const onAddTask = () => {
