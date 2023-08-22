@@ -156,10 +156,18 @@ export const App = () => {
   );
 
   // カードを追加するイベント
-  const [numberNewKey, setNumberNewKey] = useState(0);
+  let newCardKey: number = 0;
   const createCardData = () => {
-    const newCardData: CardData = {key: numberNewKey, title: '', taskData: [], deleted: false};
-    setNumberNewKey(numberNewKey + 1);
+    let newKey = 0;
+    while (true){
+      const duplicated = cardData.filter(data => {data.key === newKey});
+      console.log(duplicated);
+      if (duplicated.length === 0){
+        break;
+      }
+      newKey++;
+    }
+    const newCardData: CardData = {key: newKey, title: '', taskData: [], deleted: false};
     return newCardData;
   };
   const [cardData, setCardData] = React.useState<CardData[]> ([]);
