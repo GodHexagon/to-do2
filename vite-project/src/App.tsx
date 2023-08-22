@@ -52,7 +52,20 @@ function TaskList({ taskData }) {
 
 }
 */
-const TaskList = (data: TaskData[]) => {
+const TaskList = (prop: { taskData: TaskData[], onChange: (newData: TaskData[]) => void }) => {
+  let data = prop.taskData;
+  const onChange = prop.onChange;
+  
+  let newTaskKey: number = 0;
+  const createTaskData = () => {
+    const newTaskData: TaskData = {key: newTaskKey, taskName: "", completed: false};
+    newTaskKey += 1;
+    return newTaskData;
+  };
+  const onAddTask = () => {
+    data = [ ...data, createTaskData() ];
+    onChange(data);
+  };
 
   return (
     <List dense>
@@ -63,6 +76,7 @@ const TaskList = (data: TaskData[]) => {
       })}
       <ListItemButton>
         <ListItemIcon
+          onClick={onAddTask}
         >
           <AddIcon />
         </ListItemIcon>
@@ -70,9 +84,6 @@ const TaskList = (data: TaskData[]) => {
     </List>
   );
 }
-const createTaskData = (data: TaskData[]) => {
-  return {key: data.length, taskName: "", completed: false};
-};
 
 export const App = () => {
   // Settingsを開くイベント
@@ -179,10 +190,18 @@ export const App = () => {
     data.title = newText;
     const index:number = cardData.indexOf(data);
     cardData.splice(index, 1, data);
+    console.log(...cardData);// TEST
+    setCardData([...cardData]);
+  }
+
+  // タスクデータ更新イベント
+  const onTaskDataChange = (data: CardData, newData: TaskData[]) => {
+    data.taskData = newData;
+    const index:number = cardData.indexOf(data);
+    cardData.splice(index, 1, data);
     setCardData([...cardData]);
   }
   
-
   // カードのチェックボックスのイベントハンドラー
   /*
   const [bottomCheckbox, setBottomCheckbox] = useState(false);
@@ -254,7 +273,7 @@ export const App = () => {
                         </form>
                       </CardContent>
                       <CardContent sx={{ overflow: 'scroll' }}>
-                        {TaskList(data.taskData)}
+                        <TaskList taskData={data.taskData} onChange={(newData) => onTaskDataChange(data, newData)} />
                       </CardContent>
                       <CardActions sx={{ justifyContent: 'end' }}>
                         <Checkbox
