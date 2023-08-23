@@ -47,19 +47,17 @@ interface TaskData {
 }
  
 // タスクリストの中身
-/*
-function TaskList({ taskData }) {
-
-}
-*/
-const TaskList = (prop: { taskData: TaskData[], onChange: (newData: TaskData[]) => void }) => {
+const TaskList = (prop: {
+  taskData: TaskData[],
+  onChange: (newData: TaskData[]) => void 
+}) => {
   let data = prop.taskData;
   const onChange = prop.onChange;
   
-  let newTaskKey: number = 0;
+  const [newTaskKey, setNewTaskKey] = useState(0);
   const createTaskData = () => {
     const newTaskData: TaskData = {key: newTaskKey, taskName: "", completed: false};
-    newTaskKey += 1;
+    setNewTaskKey(newTaskKey + 1);
     return newTaskData;
   };
   const onAddTask = () => {
@@ -71,17 +69,34 @@ const TaskList = (prop: { taskData: TaskData[], onChange: (newData: TaskData[]) 
     <List dense>
       {data.map((data) => {
         return(
-          <ListItem key={data.key}>aaa</ListItem>
+          <ListItem key={data.key}>
+          </ListItem>
         );
       })}
-      <ListItemButton>
-        <ListItemIcon
-          onClick={onAddTask}
-        >
-          <AddIcon />
-        </ListItemIcon>
-      </ListItemButton>
+      <ListItem>
+        <ListItemButton>
+          <ListItemIcon
+            onClick={onAddTask}
+          >
+            <AddIcon />
+          </ListItemIcon>
+        </ListItemButton>
+      </ListItem>
     </List>
+  );
+}
+
+// タスクの中身
+const task = (prop: {
+  data: TaskData
+}) => {
+  const data = prop.data;
+  return (
+    <ListItem key={data.key}>
+      <ListItemButton>
+        <ListItemText>aaa</ListItemText>
+      </ListItemButton>
+    </ListItem>
   );
 }
 
