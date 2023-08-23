@@ -47,12 +47,10 @@ interface TaskData {
 }
  
 // タスクリストの中身
-/*
-function TaskList({ taskData }) {
-
-}
-*/
-const TaskList = (prop: { taskData: TaskData[], onChange: (newData: TaskData[]) => void }) => {
+const TaskList = (prop: {
+  taskData: TaskData[],
+  onChange: (newData: TaskData[]) => void 
+}) => {
   let data = prop.taskData;
   const onChange = prop.onChange;
   
@@ -71,17 +69,34 @@ const TaskList = (prop: { taskData: TaskData[], onChange: (newData: TaskData[]) 
     <List dense>
       {data.map((data) => {
         return(
-          <ListItem key={data.key}>aaa</ListItem>
+          <ListItem key={data.key}>
+          </ListItem>
         );
       })}
-      <ListItemButton>
-        <ListItemIcon
-          onClick={onAddTask}
-        >
-          <AddIcon />
-        </ListItemIcon>
-      </ListItemButton>
+      <ListItem>
+        <ListItemButton>
+          <ListItemIcon
+            onClick={onAddTask}
+          >
+            <AddIcon />
+          </ListItemIcon>
+        </ListItemButton>
+      </ListItem>
     </List>
+  );
+}
+
+// タスクの中身
+const task = (prop: {
+  data: TaskData
+}) => {
+  const data = prop.data;
+  return (
+    <ListItem key={data.key}>
+      <ListItemButton>
+        <ListItemText>aaa</ListItemText>
+      </ListItemButton>
+    </ListItem>
   );
 }
 
