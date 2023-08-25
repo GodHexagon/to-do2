@@ -52,7 +52,6 @@ const TaskList = (prop: {
   onChange: (newData: TaskData[]) => void 
 }) => {
   let data = prop.taskData;
-  const onChange = prop.onChange;
   
   const [newTaskKey, setNewTaskKey] = useState(0);
   const createTaskData = () => {
@@ -62,22 +61,21 @@ const TaskList = (prop: {
   };
   const onAddTask = () => {
     data = [ ...data, createTaskData() ];
-    onChange(data);
+    prop.onChange(data);
   };
 
   return (
     <List dense>
       {data.map((data) => {
         return(
-          <ListItem key={data.key}>
-          </ListItem>
+          <Task data={data} key={data.key} />
         );
       })}
-      <ListItem>
-        <ListItemButton>
-          <ListItemIcon
-            onClick={onAddTask}
-          >
+      <ListItem key={-1} disablePadding>
+        <ListItemButton
+          onClick={onAddTask}
+        >
+          <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
         </ListItemButton>
@@ -87,14 +85,42 @@ const TaskList = (prop: {
 }
 
 // タスクの中身
-const task = (prop: {
+const Task = (prop: {
   data: TaskData
 }) => {
   const data = prop.data;
+  const labelId = `checkbox-list-secondary-label-${data.key}`;
   return (
-    <ListItem key={data.key}>
+    <ListItem
+      key={data.key}
+      sx={{
+        '& .MuiListItemSecondaryAction-root': {
+        },
+        '& .MuiButtonBase-root': {
+        }
+      }}
+      secondaryAction={
+        <Checkbox
+          edge="start"
+          inputProps={{ 'aria-labelledby': labelId }}
+        />
+      }
+      disablePadding
+    >
       <ListItemButton>
-        <ListItemText>aaa</ListItemText>
+        <TextField
+          fullWidth 
+          multiline
+          id="task-name" 
+          variant="filled"
+          size="small" 
+          maxRows={3}
+          sx={{
+            '& .MuiInputBase-root': {
+              paddingTop: '4px',
+            },
+          }} 
+        />
       </ListItemButton>
     </ListItem>
   );
@@ -171,18 +197,10 @@ export const App = () => {
   );
 
   // カードを追加するイベント
-  let newCardKey: number = 0;
+  const [newKey, setNewKey] = useState(0);
   const createCardData = () => {
-    let newKey = 0;
-    while (true){
-      const duplicated = cardData.filter(data => {data.key === newKey});
-      console.log(duplicated);
-      if (duplicated.length === 0){
-        break;
-      }
-      newKey++;
-    }
     const newCardData: CardData = {key: newKey, title: '', taskData: [], deleted: false};
+    setNewKey(newKey + 1);
     return newCardData;
   };
   const [cardData, setCardData] = React.useState<CardData[]> ([]);
@@ -210,8 +228,8 @@ export const App = () => {
 
   // タイトル入力イベントハンドラー
   const onCardTitleChange = (data: CardData, newText: string) => {
-    data.title = newText;
     const index:number = cardData.indexOf(data);
+    data.title = newText;
     cardData.splice(index, 1, data);
     console.log(...cardData);// TEST
     setCardData([...cardData]);
@@ -219,8 +237,8 @@ export const App = () => {
 
   // タスクデータ更新イベント
   const onTaskDataChange = (data: CardData, newData: TaskData[]) => {
-    data.taskData = newData;
     const index:number = cardData.indexOf(data);
+    data.taskData = newData;
     cardData.splice(index, 1, data);
     setCardData([...cardData]);
   }
@@ -276,8 +294,8 @@ export const App = () => {
             {cardData.map((data) => {
               return (
                 <Grid width="25vw" maxHeight="100%" padding="10px" key={data.key}>
-                  <Card>
-                    <Stack>
+                  <Card sx={{ height: '100%' }}>
+                    <Stack sx={{ height: '100%' }}>
                       <CardContent>
                         <form>
                           <TextField 
@@ -285,7 +303,7 @@ export const App = () => {
                             multiline
                             id="card-title" 
                             variant="standard" 
-                            maxRows={4} 
+                            maxRows={3} 
                             value={
                               data.title
                             }
