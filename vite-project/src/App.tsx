@@ -32,6 +32,7 @@ import UndoIcon from '@mui/icons-material/Undo';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import BackspaceIcon from '@mui/icons-material/BackspaceOutlined';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 interface CardData {
@@ -64,11 +65,32 @@ const TaskList = (prop: {
     prop.onChange(data);
   };
 
+  const changeTaskData = (taskData: TaskData) => {
+    const index: number = data.indexOf(taskData);
+    data.splice(index, 1, taskData);
+    prop.onChange(data);
+  }
+
+  const deleteTask = (key: number) => {
+    const dataToDelete = data.find((data) => data.key === key)
+    if(dataToDelete === undefined){
+      return;
+    }
+    const index: number = data.indexOf(dataToDelete);
+    data.splice(index, 1);
+    prop.onChange(data);
+  }
+
   return (
     <List dense>
       {data.map((data) => {
         return(
-          <Task data={data} key={data.key} />
+          <Task 
+            data={data} 
+            key={data.key} 
+            onChange={(data) => changeTaskData(data)}
+            onDelete={deleteTask}
+          />
         );
       })}
       <ListItem key={-1} disablePadding>
@@ -86,17 +108,33 @@ const TaskList = (prop: {
 
 // タスクの中身
 const Task = (prop: {
-  data: TaskData
+  data: TaskData,
+  onChange: (data: TaskData) => void
+  onDelete: (key: number) => void
 }) => {
   const data = prop.data;
   const labelId = `checkbox-list-secondary-label-${data.key}`;
+
+  const onTaskNameChange = (text: string) => {
+    data.taskName = text;
+    prop.onChange(data);
+  }
+
+  const deleteTask = (key: number) => () => {
+    prop.onDelete(key);
+  }
+
   return (
     <ListItem
       key={data.key}
       sx={{
         '& .MuiListItemSecondaryAction-root': {
+          left: '16px',
+          right: 'auto'
         },
-        '& .MuiButtonBase-root': {
+        '& .MuiListItemButton-root': {
+          paddingLeft: '48px',
+          paddingRight: '16px'
         }
       }}
       secondaryAction={
@@ -115,12 +153,19 @@ const Task = (prop: {
           variant="filled"
           size="small" 
           maxRows={3}
+          value={data.taskName}
+          onChange={(e) => onTaskNameChange(e.target.value)}
           sx={{
             '& .MuiInputBase-root': {
               paddingTop: '4px',
             },
           }} 
         />
+        <IconButton
+          onClick={deleteTask(data.key)}
+        >
+          <BackspaceIcon />
+        </IconButton>
       </ListItemButton>
     </ListItem>
   );
@@ -231,7 +276,6 @@ export const App = () => {
     const index:number = cardData.indexOf(data);
     data.title = newText;
     cardData.splice(index, 1, data);
-    console.log(...cardData);// TEST
     setCardData([...cardData]);
   }
 
