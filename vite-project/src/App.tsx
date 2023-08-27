@@ -26,6 +26,8 @@ import TextField from '@mui/material/TextField';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import FilledInput from '@mui/material/FilledInput';
 
 import RedoIcon from '@mui/icons-material/Redo';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -114,12 +116,21 @@ const Task = (prop: {
 }) => {
   const data = prop.data;
   const labelId = `checkbox-list-secondary-label-${data.key}`;
+  const [isFocusingTask, setIsFocusingTask] = useState(false);
 
+  // タスクテキスト変更
   const onTaskNameChange = (text: string) => {
     data.taskName = text;
     prop.onChange(data);
   }
 
+  // チェックボックス
+  const changeComplete = () => {
+    data.completed = !data.completed;
+    prop.onChange(data);
+  }
+
+  // タスク削除
   const deleteTask = (key: number) => () => {
     prop.onDelete(key);
   }
@@ -141,31 +152,42 @@ const Task = (prop: {
         <Checkbox
           edge="start"
           inputProps={{ 'aria-labelledby': labelId }}
+          checked={data.completed}
+          onChange={changeComplete}
         />
       }
       disablePadding
     >
-      <ListItemButton>
-        <TextField
-          fullWidth 
-          multiline
-          id="task-name" 
-          variant="filled"
-          size="small" 
-          maxRows={3}
-          value={data.taskName}
-          onChange={(e) => onTaskNameChange(e.target.value)}
-          sx={{
-            '& .MuiInputBase-root': {
+      <ListItemButton
+        onMouseEnter={() => setIsFocusingTask(true)}
+        onMouseLeave={() => setIsFocusingTask(false)}
+      >
+        <FormControl variant="filled" sx={{ width: '600px' }}>
+          <FilledInput
+            fullWidth 
+            multiline
+            id="task-name" 
+            size="small" 
+            maxRows={3}
+            value={data.taskName}
+            onChange={(e) => onTaskNameChange(e.target.value)}
+            sx={{
               paddingTop: '4px',
-            },
-          }} 
-        />
-        <IconButton
-          onClick={deleteTask(data.key)}
-        >
-          <BackspaceIcon />
-        </IconButton>
+            }}
+            endAdornment={
+              <IconButton
+                //disabled={!isFocusingTask}
+                onClick={deleteTask(data.key)}
+                sx={{
+                  visibility: isFocusingTask ? 'visible' : 'hidden',
+                  padding: '0'
+                }}
+              >
+                <BackspaceIcon />
+              </IconButton>
+            }
+          />
+        </FormControl>
       </ListItemButton>
     </ListItem>
   );
@@ -285,6 +307,7 @@ export const App = () => {
     data.taskData = newData;
     cardData.splice(index, 1, data);
     setCardData([...cardData]);
+    console.log(cardData);
   }
   
   // カードのチェックボックスのイベントハンドラー
@@ -361,8 +384,6 @@ export const App = () => {
                         <TaskList taskData={data.taskData} onChange={(newData) => onTaskDataChange(data, newData)} />
                       </CardContent>
                       <CardActions sx={{ justifyContent: 'end' }}>
-                        <Checkbox
-                        />
                         <>
                           <IconButton
                             id="open-card-menu"
