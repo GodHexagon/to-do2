@@ -117,22 +117,35 @@ const Task = (prop: {
   const data = prop.data;
   const labelId = `checkbox-list-secondary-label-${data.key}`;
   const [isFocusingTask, setIsFocusingTask] = useState(false);
+  const deleteButton = React.useRef(null);
 
   // タスクテキスト変更
   const onTaskNameChange = (text: string) => {
     data.taskName = text;
     prop.onChange(data);
   }
-
   // チェックボックス
   const changeComplete = () => {
     data.completed = !data.completed;
     prop.onChange(data);
   }
 
+  const onKyeDownAtNameField = () => (e: React.KeyboardEvent) => {
+    if(e.key === "Backspace") {
+      prop.onDelete(data.key);
+    }
+    console.log(e.currentTarget);
+    console.log(e.key);
+  }
+
   // タスク削除
   const deleteTask = (key: number) => () => {
     prop.onDelete(key);
+  }
+  const onBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+    const relatedTarget = e.relatedTarget;
+    if (deleteButton.current === relatedTarget) { return }
+    setIsFocusingTask(false);
   }
 
   return (
@@ -159,8 +172,7 @@ const Task = (prop: {
       disablePadding
     >
       <ListItemButton
-        onMouseEnter={() => setIsFocusingTask(true)}
-        onMouseLeave={() => setIsFocusingTask(false)}
+        tabIndex={-1}
       >
         <FormControl variant="filled" sx={{ width: '600px' }}>
           <FilledInput
@@ -171,12 +183,15 @@ const Task = (prop: {
             maxRows={3}
             value={data.taskName}
             onChange={(e) => onTaskNameChange(e.target.value)}
+            onFocus={() => setIsFocusingTask(true)}
+            onBlur={onBlur}
             sx={{
               paddingTop: '4px',
             }}
             endAdornment={
               <IconButton
                 //disabled={!isFocusingTask}
+                ref={deleteButton}
                 onClick={deleteTask(data.key)}
                 sx={{
                   visibility: isFocusingTask ? 'visible' : 'hidden',
@@ -307,7 +322,6 @@ export const App = () => {
     data.taskData = newData;
     cardData.splice(index, 1, data);
     setCardData([...cardData]);
-    console.log(cardData);
   }
   
   // カードのチェックボックスのイベントハンドラー
