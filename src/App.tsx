@@ -130,14 +130,6 @@ const Task = (prop: {
     prop.onChange(data);
   }
 
-  const onKyeDownAtNameField = () => (e: React.KeyboardEvent) => {
-    if(e.key === "Backspace") {
-      prop.onDelete(data.key);
-    }
-    console.log(e.currentTarget);
-    console.log(e.key);
-  }
-
   // タスク削除
   const deleteTask = (key: number) => () => {
     prop.onDelete(key);
