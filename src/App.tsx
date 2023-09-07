@@ -372,7 +372,6 @@ export const App = () => {
         }}
       >
         <Box 
-          width="0" 
           maxWidth="100000px" 
           sx={{
             width: {
