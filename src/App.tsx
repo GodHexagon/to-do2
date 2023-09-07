@@ -361,12 +361,64 @@ export const App = () => {
         </Toolbar>
       </AppBar>
 
-      <Box paddingX="0vw" overflow="hidden" sx={{ flex: 1 }}>
-        <Box width="0" height="100%" maxWidth="100000px" position="relative">
-          <Grid height="100%" container direction="column" justifyContent="start">
+      <Box
+        paddingX="0vw" 
+        sx={{ 
+          flex: "1",
+          overflow: {
+            xs: "scroll",
+            sm: "hidden"
+          }
+        }}
+      >
+        <Box 
+          maxWidth="100000px" 
+          sx={{
+            width: {
+              xs: "100%",
+              sm: "auto"
+            },
+            height: {
+              xs: "auto",
+              sm: "100%"
+            },
+            position: {
+              xs: "static",
+              sm: "relative"
+            }
+          }}
+        >
+          <Grid 
+            container 
+            direction="column" 
+            height="100%" 
+            justifyContent="start"
+            sx={{
+              marginX: {
+                xs: "0",
+                lg: "1%",
+                xl: "0"
+              }
+            }}
+          >
             {cardData.map((data) => {
               return (
-                <Grid width="25vw" maxHeight="100%" padding="10px" key={data.key}>
+                <Grid
+                  padding="10px" 
+                  key={data.key}
+                  sx={{
+                    width: {
+                      xs: "100%",
+                      sm: "50%",
+                      lg: "33%",
+                      xl: "25%"
+                    },
+                    maxHeight: {
+                      xs: "unset",
+                      sm: "100%"
+                    }
+                  }}
+                >
                   <Card sx={{ height: '100%' }}>
                     <Stack sx={{ height: '100%' }}>
                       <CardContent>
@@ -420,7 +472,20 @@ export const App = () => {
               <MenuItem onClick={selectedCardDeta === undefined? undefined: hanDeleteCard(selectedCardDeta)}>Delete</MenuItem>
             </Menu>
 
-            <Grid width="25vw" maxHeight="100%">
+            <Grid
+              sx={{
+                width: {
+                  xs: "100%",
+                  sm: "50%",
+                  lg: "33%",
+                  xl: "25%"
+                },
+                maxHeight: {
+                  xs: "unset",
+                  sm: "100%"
+                }
+              }}
+            >
               <Card variant="outlined" sx={{ margin: '10px' }}>
                 <CardContent sx={{ display: 'flex', justifyContent: 'center' }}>
                   <Fab color="primary" aria-label="add" onClick={addCard}>
