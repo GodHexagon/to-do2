@@ -35,6 +35,7 @@ import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import BackspaceIcon from '@mui/icons-material/BackspaceOutlined';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 interface CardData {
@@ -243,29 +244,17 @@ export const App = () => {
       </List>
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <RedoIcon /> : <RedoIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <RedoIcon /> : <RedoIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem>
+          <ListItemText primary="＊すべてのデータは保存されません。念のため。" />
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton href="https://github.com/GodHexagon/to-do2" rel="noopener" target="_blank">
+            <ListItemIcon>
+              <GitHubIcon />
+            </ListItemIcon>
+            <ListItemText primary="Repository" />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
