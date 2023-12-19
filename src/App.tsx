@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import { getDoc } from 'firebase/firestore'
+import db from './../firebaseConfig'
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -271,6 +274,7 @@ export const App = () => {
   const addCard = () => {
     setCardData([ ...cardData, createCardData() ]);
   };
+  
   
   // カードを削除するイベント
   const hanDeleteCard = (cardToDelete: CardData) => () => {
