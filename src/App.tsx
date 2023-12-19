@@ -266,6 +266,7 @@ export const App = () => {
     setNewKey(newKey + 1);
     return newCardData;
   };
+  // 全部のデータはここで宣言
   const [cardData, setCardData] = React.useState<CardData[]> ([]);
   const addCard = () => {
     setCardData([ ...cardData, createCardData() ]);
